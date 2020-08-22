@@ -14,7 +14,7 @@ import melons
 app = Flask(__name__)
 
 # A secret key is needed to use Flask sessioning features
-app.secret_key = 'this-should-be-something-unguessable'
+app.secret_key = 'something-unguessable'
 
 # Normally, if you refer to an undefined variable in a Jinja template,
 # Jinja silently ignores this. This makes debugging difficult, so we'll
@@ -100,7 +100,13 @@ def add_to_cart(melon_id):
     # - flash a success message
     # - redirect the user to the cart page
 
-    return "Oops! This needs to be implemented!"
+    if "cart" not in session:
+        session["cart"] = {}
+
+    session["cart"][melon_id] = session["cart"].get(melon_id,0) + 1
+    print(session["cart"])   
+
+    return redirect("/cart")
 
 
 @app.route("/login", methods=["GET"])
